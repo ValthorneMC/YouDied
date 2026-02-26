@@ -1,12 +1,11 @@
 package se.gory_moon.you_died.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -14,7 +13,7 @@ import se.gory_moon.you_died.YouDied;
 
 public class DeathSplashScreen extends DeathScreenWrapper {
     private static final ResourceLocation TIMES_FONT = ResourceLocation.fromNamespaceAndPath(YouDied.MOD_ID, "times");
-    private static final Style ROOT_STYLE = Style.EMPTY.withFont(TIMES_FONT);
+    private static final Style ROOT_STYLE = Style.EMPTY.withFont(new FontDescription.Resource(TIMES_FONT));
     private final Component deathTitle;
     private final DeathScreenWrapper deathScreen;
 
@@ -67,10 +66,6 @@ public class DeathSplashScreen extends DeathScreenWrapper {
             fadeIn = Mth.clamp(fOut, 0.0F, 1.0F);
         }
 
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, fadeIn);
-
         for (GuiEventListener guieventlistener : deathScreen.children()) {
             if (guieventlistener instanceof AbstractWidget) {
                 ((AbstractWidget) guieventlistener).setAlpha(fadeIn);
@@ -91,15 +86,15 @@ public class DeathSplashScreen extends DeathScreenWrapper {
             float scaleZoom = Mth.lerp(zoomIn, 0F, 0.4F);
             float scale = 2.6F + scaleZoom;
 
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().translate(x + (w / 2f), y, 0);
-            guiGraphics.pose().scale(scale, scale, scale);
+            guiGraphics.pose().pushMatrix();
+            guiGraphics.pose().translate(x + (w / 2f), y);
+            guiGraphics.pose().scale(scale, scale);
 
             int l = Mth.ceil(fadeInText * 255.0F) << 24;
             if ((l & 0xfc000000) != 0) {
                 guiGraphics.drawString(font, deathTitle, (int) -(w/2f), -(font.lineHeight / 4), 0x008a0001 | l, false);
             }
-            guiGraphics.pose().popPose();
+            guiGraphics.pose().popMatrix();
         } else {
             int l = Mth.ceil(fadeIn * 255.0F) << 24;
             if ((l & 0xfc000000) != 0) {

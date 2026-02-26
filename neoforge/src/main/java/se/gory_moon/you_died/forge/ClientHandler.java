@@ -14,7 +14,7 @@ import se.gory_moon.you_died.YouDied;
 import se.gory_moon.you_died.client.DeathScreenWrapper;
 import se.gory_moon.you_died.client.DeathSplashScreen;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = YouDied.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(value = Dist.CLIENT, modid = YouDied.MOD_ID)
 public class ClientHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

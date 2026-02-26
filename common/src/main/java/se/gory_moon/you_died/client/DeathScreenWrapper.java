@@ -5,6 +5,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -40,10 +42,10 @@ public class DeathScreenWrapper extends DeathScreen {
         int alphaColor = Mth.ceil(this.alpha * 255.0F) << 24;
 
         guiGraphics.fillGradient(0, 0, this.width, this.height, 0x60500000, 0xa0803030);
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().scale(2.0F, 2.0F, 2.0F);
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().scale(2.0F, 2.0F);
         guiGraphics.drawCenteredString(this.font, deathScreen.getTitle(), this.width / 2 / 2, 30, 0xffffff | alphaColor);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
         if (deathScreen.causeOfDeath != null) {
             guiGraphics.drawCenteredString(this.font, deathScreen.causeOfDeath, this.width / 2, 85, 0xffffff | alphaColor);
         }
@@ -68,9 +70,9 @@ public class DeathScreenWrapper extends DeathScreen {
     }
 
     @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean fromKeyboard) {
         if (condition.getAsBoolean())
-            return deathScreen.mouseClicked(pMouseX, pMouseY, pButton);
+            return deathScreen.mouseClicked(event, fromKeyboard);
         return false;
     }
 
@@ -87,17 +89,17 @@ public class DeathScreenWrapper extends DeathScreen {
     }
 
     @Override
-    public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
+    public boolean mouseReleased(MouseButtonEvent event) {
         if (condition.getAsBoolean())
-            return deathScreen.mouseReleased(pMouseX, pMouseY, pButton);
-        return super.mouseReleased(pMouseX, pMouseY, pButton);
+            return deathScreen.mouseReleased(event);
+        return super.mouseReleased(event);
     }
 
     @Override
-    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
+    public boolean mouseDragged(MouseButtonEvent event, double pDragX, double pDragY) {
         if (condition.getAsBoolean())
-            return deathScreen.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
-        return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
+            return deathScreen.mouseDragged(event, pDragX, pDragY);
+        return super.mouseDragged(event, pDragX, pDragY);
     }
 
     @Override
@@ -108,10 +110,10 @@ public class DeathScreenWrapper extends DeathScreen {
     }
 
     @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+    public boolean keyPressed(KeyEvent event) {
         if (condition.getAsBoolean())
-            return deathScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+            return deathScreen.keyPressed(event);
+        return super.keyPressed(event);
     }
 
     @Override
@@ -133,10 +135,10 @@ public class DeathScreenWrapper extends DeathScreen {
     }
 
     @Override
-    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
+    public boolean keyReleased(KeyEvent event) {
         if (condition.getAsBoolean())
-            return deathScreen.keyReleased(pKeyCode, pScanCode, pModifiers);
-        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
+            return deathScreen.keyReleased(event);
+        return super.keyReleased(event);
     }
 
     @Override
