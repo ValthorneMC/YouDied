@@ -1,13 +1,13 @@
 package se.gory_moon.you_died.client;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.Style;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,14 +22,14 @@ public class DeathScreenWrapper extends DeathScreen {
     protected BooleanSupplier condition = () -> true;
 
     public DeathScreenWrapper(DeathScreen deathScreen) {
-        super(null, deathScreen.hardcore);
+        super(null, deathScreen.hardcore, Minecraft.getInstance().player);
         this.deathScreen = deathScreen;
     }
 
     @Override
     protected void init() {
         //noinspection ConstantConditions
-        deathScreen.init(minecraft, width, height);
+        deathScreen.init(width, height);
     }
 
     public void setAlpha(float alpha) {
@@ -51,10 +51,7 @@ public class DeathScreenWrapper extends DeathScreen {
         }
 
         guiGraphics.drawCenteredString(this.font, deathScreen.deathScore, this.width / 2, 100, 0xffffff | alphaColor);
-        if (deathScreen.causeOfDeath != null && pMouseY > 85 && pMouseY < 85 + 9) {
-            Style style = getClickedComponentStyleAt(pMouseX);
-            guiGraphics.renderComponentHoverEffect(this.font, style, pMouseX, pMouseY);
-        }
+
 
         // Sets the alpha on all widgets
         for (GuiEventListener guieventlistener : deathScreen.children()) {

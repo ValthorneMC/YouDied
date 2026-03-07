@@ -1,18 +1,17 @@
 package se.gory_moon.you_died.client;
 
-import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import se.gory_moon.you_died.YouDied;
 
 public class DeathSplashScreen extends DeathScreenWrapper {
-    private static final ResourceLocation TIMES_FONT = ResourceLocation.fromNamespaceAndPath(YouDied.MOD_ID, "times");
+    private static final Identifier TIMES_FONT = Identifier.fromNamespaceAndPath(YouDied.MOD_ID, "times");
     private static final Style ROOT_STYLE = Style.EMPTY.withFont(new FontDescription.Resource(TIMES_FONT));
     private final Component deathTitle;
     private final DeathScreenWrapper deathScreen;
@@ -31,7 +30,7 @@ public class DeathSplashScreen extends DeathScreenWrapper {
 
     @Override
     public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        long now = Util.getMillis();
+        long now = System.nanoTime() / 1_000_000L;
 
         if (fadeInStart == 0L) {
             fadeInStart = now;
