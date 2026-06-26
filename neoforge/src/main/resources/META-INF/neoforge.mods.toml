@@ -19,13 +19,13 @@ A mod that adds a Dark Souls inspired death screen
 [[dependencies.you_died]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.10,)"
+versionRange = "[26.1.2,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.you_died]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.10,)"
+versionRange = "[26.1.2,)"
 ordering = "NONE"
 side = "BOTH"
