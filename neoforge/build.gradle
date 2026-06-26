@@ -53,30 +53,22 @@ shadowJar {
     archiveClassifier = 'dev-shadow'
 }
 
-remapJar {
-    inputFile.set shadowJar.archiveFile
-}
-
 tasks.register('signJar') {
-    dependsOn remapJar
-    onlyIf {
-        project.hasProperty('keyStore')
-    }
+    dependsOn shadowJar
 
     doLast {
+        def outputDir = layout.buildDirectory.get()
+        def inputFile = shadowJar.archiveFile.get()
+        def output = new File("$outputDir/jars")
+        output.mkdirs()
+
         if (project.hasProperty('keyStore')) {
-            def outputDir = layout.buildDirectory.get()
-            new File("$outputDir/libs").mkdirs()
-            logger.info("Signing jar ${remapJar.archiveFileName.get()}")
+            logger.info("Signing jar ${shadowJar.archiveFileName.get()}")
 
             def keyStore = findProperty('keyStore')
             def alias = project.findProperty('keyStoreAlias')
             def storePass = project.findProperty('keyStorePass')
             def keyPass = project.findProperty('keyStorePass')
-            def inputFile = remapJar.archiveFile.get()
-
-            def output = new File("$outputDir/jars")
-            output.mkdirs()
 
             ant.signjar(
                     destDir: "${output.absolutePath}",
@@ -89,7 +81,12 @@ tasks.register('signJar') {
                     verbose: true,
                     preservelastmodified: "true")
         } else {
-            logger.log(LogLevel.WARN, "Could not sign ${remapJar.archiveFileName.get()}. No keyStore property could be found")
+            logger.log(LogLevel.WARN, "Could not sign ${shadowJar.archiveFileName.get()}. No keyStore property could be found")
+            copy {
+                from inputFile
+                into output
+                rename { it.replace("-dev-shadow", "") }
+            }
         }
     }
 }
