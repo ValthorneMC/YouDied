@@ -19,7 +19,7 @@ public class YouDiedFabric implements ClientModInitializer
 		ClientGuiEvent.SET_SCREEN.register(screen -> {
 			if (screen instanceof DeathScreen deathScreen && !(screen instanceof DeathSplashScreen)) {
 				LocalPlayer player = Minecraft.getInstance().player;
-				if (player != null && !(Minecraft.getInstance().screen instanceof DeathScreen)) {
+				if (player != null) {
 					Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(YouDied.DEATH_SOUND, 1.0F, 1.0F));
 					return CompoundEventResult.interruptTrue(new DeathSplashScreen(new DeathScreenWrapper(deathScreen)));
 				}
