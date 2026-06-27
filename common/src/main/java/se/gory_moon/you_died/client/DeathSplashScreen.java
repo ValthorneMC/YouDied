@@ -1,6 +1,6 @@
 package se.gory_moon.you_died.client;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
@@ -29,7 +29,7 @@ public class DeathSplashScreen extends DeathScreenWrapper {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         long now = System.nanoTime() / 1_000_000L;
 
         if (fadeInStart == 0L) {
@@ -91,13 +91,13 @@ public class DeathSplashScreen extends DeathScreenWrapper {
 
             int l = Mth.ceil(fadeInText * 255.0F) << 24;
             if ((l & 0xfc000000) != 0) {
-                guiGraphics.drawString(font, deathTitle, (int) -(w/2f), -(font.lineHeight / 4), 0x008a0001 | l, false);
+                guiGraphics.text(font, deathTitle, (int) -(w/2f), -(font.lineHeight / 4), 0x008a0001 | l, false);
             }
             guiGraphics.pose().popMatrix();
         } else {
             int l = Mth.ceil(fadeIn * 255.0F) << 24;
             if ((l & 0xfc000000) != 0) {
-                deathScreen.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
+                deathScreen.extractRenderState(guiGraphics, pMouseX, pMouseY, pPartialTick);
             }
         }
     }

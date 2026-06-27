@@ -1,6 +1,6 @@
 package se.gory_moon.you_died.client;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
@@ -38,19 +38,19 @@ public class DeathScreenWrapper extends DeathScreen {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int alphaColor = Mth.ceil(this.alpha * 255.0F) << 24;
 
         guiGraphics.fillGradient(0, 0, this.width, this.height, 0x60500000, 0xa0803030);
         guiGraphics.pose().pushMatrix();
         guiGraphics.pose().scale(2.0F, 2.0F);
-        guiGraphics.drawCenteredString(this.font, deathScreen.getTitle(), this.width / 2 / 2, 30, 0xffffff | alphaColor);
+        guiGraphics.centeredText(this.font, deathScreen.getTitle(), this.width / 2 / 2, 30, 0xffffff | alphaColor);
         guiGraphics.pose().popMatrix();
         if (deathScreen.causeOfDeath != null) {
-            guiGraphics.drawCenteredString(this.font, deathScreen.causeOfDeath, this.width / 2, 85, 0xffffff | alphaColor);
+            guiGraphics.centeredText(this.font, deathScreen.causeOfDeath, this.width / 2, 85, 0xffffff | alphaColor);
         }
 
-        guiGraphics.drawCenteredString(this.font, deathScreen.deathScore, this.width / 2, 100, 0xffffff | alphaColor);
+        guiGraphics.centeredText(this.font, deathScreen.deathScore, this.width / 2, 100, 0xffffff | alphaColor);
 
 
         // Sets the alpha on all widgets
@@ -62,7 +62,7 @@ public class DeathScreenWrapper extends DeathScreen {
 
         // Renders all renderables without calling super
         for(Renderable renderable : deathScreen.renderables) {
-            renderable.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
+            renderable.extractRenderState(guiGraphics, pMouseX, pMouseY, pPartialTick);
         }
     }
 
