@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 architectury {
@@ -55,38 +55,21 @@ shadowJar {
 
 tasks.register('signJar') {
     dependsOn shadowJar
-
     doLast {
         def outputDir = layout.buildDirectory.get()
         def inputFile = shadowJar.archiveFile.get()
         def output = new File("$outputDir/jars")
         output.mkdirs()
-
         if (project.hasProperty('keyStore')) {
             logger.info("Signing jar ${shadowJar.archiveFileName.get()}")
-
             def keyStore = project.findProperty('keyStore')
             def alias = project.findProperty('keyStoreAlias')
             def storePass = project.findProperty('keyStorePass')
             def keyPass = project.findProperty('keyStorePass')
-
-            ant.signjar(
-                    destDir: "${output.absolutePath}",
-                    jar: inputFile,
-                    alias: alias,
-                    storetype: "jks",
-                    keyStore: keyStore,
-                    keypass: keyPass,
-                    storepass: storePass,
-                    verbose: true,
-                    preservelastmodified: "true")
+            ant.signjar(destDir: "${output.absolutePath}", jar: inputFile, alias: alias, storetype: "jks", keyStore: keyStore, keypass: keyPass, storepass: storePass, verbose: true, preservelastmodified: "true")
         } else {
             logger.log(LogLevel.WARN, "Could not sign ${shadowJar.archiveFileName.get()}. No keyStore property could be found")
-            copy {
-                from inputFile
-                into output
-                rename { it.replace("-dev-shadow", "") }
-            }
+            copy { from inputFile; into output; rename { it.replace("-dev-shadow", "") } }
         }
     }
 }
