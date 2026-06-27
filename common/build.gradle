@@ -6,8 +6,29 @@ loom {
     accessWidenerPath = file("src/main/resources/you_died.accesswidener")
 }
 
+configurations {
+    namedElements {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    transformProductionFabric {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    transformProductionNeoForge {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
     implementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+}
+
+artifacts {
+    namedElements(jar)
+    transformProductionFabric(jar)
+    transformProductionNeoForge(jar)
 }
