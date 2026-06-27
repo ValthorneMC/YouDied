@@ -34,9 +34,9 @@ subprojects {
 
     java {
         withSourcesJar()
-
-        sourceCompatibility = JavaVersion.VERSION_25
-        targetCompatibility = JavaVersion.VERSION_25
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(25)
+        }
     }
 
     println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
