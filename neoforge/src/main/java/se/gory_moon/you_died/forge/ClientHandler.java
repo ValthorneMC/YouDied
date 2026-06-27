@@ -2,7 +2,6 @@ package se.gory_moon.you_died.forge;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.neoforged.api.distmarker.Dist;
@@ -22,7 +21,7 @@ public class ClientHandler {
         Screen screen = event.getScreen();
         if (screen instanceof DeathScreen deathScreen && !(screen instanceof DeathSplashScreen)) {
             LocalPlayer player = Minecraft.getInstance().player;
-            if (player != null && !(Minecraft.getInstance().screen instanceof DeathScreen)) {
+            if (player != null) {
                 event.setNewScreen(new DeathSplashScreen(new DeathScreenWrapper(deathScreen)));
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(YouDied.DEATH_SOUND, 1.0F, 1.0F));
             }
